@@ -1,0 +1,1137 @@
+```html
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم قياس الحدقة السريري | Optoacademy - Rasha Hassan</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js for analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts (Cairo) -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif'],
+                    },
+                    colors: {
+                        medical: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065f46',
+                            900: '#064e3b',
+                        },
+                        clinical: {
+                            dark: '#0f172a',
+                            card: '#1e293b',
+                            accent: '#3b82f6',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+    </style>
+</head>
+<body class="bg-clinical-dark text-slate-100 min-h-screen flex flex-col font-cairo selection:bg-emerald-500 selection:text-white">
+
+    <!-- Top Header & Branding -->
+    <header class="bg-slate-900/90 backdrop-blur border-b border-slate-800 sticky top-0 z-50 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col md:flex-row justify-between items-center gap-4">
+            
+            <!-- Logo and Title -->
+            <div class="flex items-center space-x-4 space-x-reverse">
+                <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-emerald-600 to-teal-400 flex items-center justify-center shadow-md ring-2 ring-emerald-400/50">
+                    <i class="fa-solid fa-eye text-white text-xl"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-bold uppercase tracking-wider px-2 py-0.5 bg-emerald-500/20 text-emerald-400 rounded-full border border-emerald-500/30">Optoacademy</span>
+                        <span class="text-xs text-slate-400">المرجع السريري 2026</span>
+                    </div>
+                    <h1 class="text-lg md:text-xl font-black text-white tracking-wide">لوحة قياس الحدقة والتشخيص العصبي والمحاكي التفاعلي</h1>
+                    <p class="text-xs text-emerald-300 font-semibold">إعداد أخصائية البصريات: رشا حسن (Optometrist Rasha Hassan)</p>
+                </div>
+            </div>
+
+            <!-- Social Media Active Links -->
+            <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
+                <a href="https://www.facebook.com/share/1FFgnuEC9p/" target="_blank" title="Facebook" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-blue-600 text-slate-300 hover:text-white flex items-center justify-center transition shadow border border-slate-700">
+                    <i class="fa-brands fa-facebook-f text-sm"></i>
+                </a>
+                <a href="https://www.instagram.com/rashamakhlouf2026?stkn=a2doMnBpZjZlcHkz" target="_blank" title="Instagram" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-pink-600 text-slate-300 hover:text-white flex items-center justify-center transition shadow border border-slate-700">
+                    <i class="fa-brands fa-instagram text-sm"></i>
+                </a>
+                <a href="https://tinyurl.com/RashaHassanLinkedIn" target="_blank" title="LinkedIn" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-blue-700 text-slate-300 hover:text-white flex items-center justify-center transition shadow border border-slate-700">
+                    <i class="fa-brands fa-linkedin-in text-sm"></i>
+                </a>
+                <a href="mailto:optoacadmy@gmail.com" title="Email" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-emerald-600 text-slate-300 hover:text-white flex items-center justify-center transition shadow border border-slate-700">
+                    <i class="fa-solid fa-envelope text-sm"></i>
+                </a>
+                <button onclick="openNotification('مرحباً بكم في منصة Optoacademy لأخصائيي البصريات - إعداد أخصائية البصريات رشا حسن', 'info')" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition shadow flex items-center gap-1.5">
+                    <i class="fa-solid fa-bell"></i> تنبيهات
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="bg-slate-900/60 border-b border-slate-800 sticky top-[69px] z-40 backdrop-blur">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex space-x-1 space-x-reverse overflow-x-auto py-2 no-scrollbar">
+                <button onclick="switchTab('dashboard')" id="btn-dashboard" class="tab-btn px-4 py-2 rounded-lg text-sm font-bold bg-emerald-600 text-white shadow transition flex items-center gap-2 whitespace-nowrap cursor-pointer">
+                    <i class="fa-solid fa-chart-pie"></i> لوحة المؤشرات والملخص
+                </button>
+                <button onclick="switchTab('simulator')" id="btn-simulator" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-300 hover:bg-slate-800 hover:text-white transition flex items-center gap-2 whitespace-nowrap cursor-pointer">
+                    <i class="fa-solid fa-eye text-emerald-400"></i> مُحاكي ديناميكية الحدقة (Clinical Eye Simulator)
+                </button>
+                <button onclick="switchTab('calculators')" id="btn-calculators" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-300 hover:bg-slate-800 hover:text-white transition flex items-center gap-2 whitespace-nowrap cursor-pointer">
+                    <i class="fa-solid fa-calculator"></i> الحاسبات السريرية (qPLR & Optic)
+                </button>
+                <button onclick="switchTab('pathways')" id="btn-pathways" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-300 hover:bg-slate-800 hover:text-white transition flex items-center gap-2 whitespace-nowrap cursor-pointer">
+                    <i class="fa-solid fa-brain"></i> التشخيص العصبي والأمراض (RAPD & Matrix)
+                </button>
+                <button onclick="switchTab('comparison')" id="btn-comparison" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-300 hover:bg-slate-800 hover:text-white transition flex items-center gap-2 whitespace-nowrap cursor-pointer">
+                    <i class="fa-solid fa-microchip"></i> مقارنة الأجهزة الآلية واليدوية
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full space-y-6">
+
+        <!-- ================= TAB 1: DASHBOARD & OVERVIEW ================= -->
+        <div id="tab-dashboard" class="space-y-6 tab-content">
+            <!-- Welcome Banner -->
+            <div class="bg-gradient-to-r from-slate-900 via-emerald-950/40 to-slate-900 border border-emerald-500/30 rounded-2xl p-6 shadow-xl relative overflow-hidden">
+                <div class="absolute -left-10 -bottom-10 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+                    <div class="md:col-span-2 space-y-3">
+                        <span class="px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-bold rounded-full border border-emerald-500/30">أكاديمية البصريات - Optoacademy</span>
+                        <h2 class="text-2xl sm:text-3xl font-black text-white">النظام الرقمي الشامل ومحاكي تشخيص الحدقة والتفسير الإكلينيكي</h2>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            مرجع متكامل لعام 2026 يقدمه لكم فريق Optoacademy بقيادة أخصائية البصريات رشا حسن. يحتوي التطبيق الآن على محاكي بصري تفاعلي لتسليط المصباح الضوئي واختبار الضوء المتأرجح (Swinging Flashlight) لحالات RAPD والأمراض العصبية والدوانية.
+                        </p>
+                        <div class="flex flex-wrap gap-3 pt-2">
+                            <button onclick="switchTab('simulator')" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition shadow flex items-center gap-2">
+                                <i class="fa-solid fa-eye"></i> تشغيل المحاكي التفاعلي للعين
+                            </button>
+                            <button onclick="switchTab('calculators')" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 rounded-xl text-xs font-bold transition shadow flex items-center gap-2">
+                                <i class="fa-solid fa-calculator"></i> الحاسبات السريرية
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 flex flex-col items-center text-center space-y-3 shadow-inner">
+                        <div class="w-16 h-16 rounded-full bg-emerald-600/20 text-emerald-400 border border-emerald-500/40 flex items-center justify-center text-2xl">
+                            <i class="fa-solid fa-user-doctor"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-bold text-white">أخصائية البصريات: رشا حسن</h3>
+                            <p class="text-xs text-emerald-400 font-medium">Optometrist & Clinical Instructor</p>
+                        </div>
+                        <div class="text-xs text-slate-400 border-t border-slate-800 pt-2 w-full">
+                            تخصص: قياسات الحدقة المتقدمة والجراحة الانكسارية والعصبية
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Standard Pupil Sizes Grid -->
+            <div>
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-ruler-combined text-emerald-400"></i> الأبعاد القياسية للحدقة ومستويات الإضاءة (Standard Pupil Sizes)
+                    </h3>
+                    <span class="text-xs text-slate-400">مستويات الإضاءة الثلاثة والهدف البصري</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Photopic -->
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-5 hover:border-emerald-500/50 transition group">
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="px-2.5 py-1 bg-amber-500/20 text-amber-400 text-xs font-bold rounded-lg border border-amber-500/30">الإضاءة الساطعة النهارية</span>
+                            <span class="text-lg font-black text-amber-400">2.0 - 3.0 مم</span>
+                        </div>
+                        <h4 class="text-white font-bold mb-1 text-sm">Photopic (الإضاءة النهارية)</h4>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            رؤية نهارية دقيقة، زيادة عمق التركيز البصري (Depth of Focus)، وحماية الشبكية من الإجهاد الضوئي الشديد.
+                        </p>
+                        <div class="mt-4 pt-3 border-t border-slate-800 text-xs text-slate-400 flex justify-between">
+                            <span>العضلة الفعالة:</span>
+                            <span class="text-emerald-400 font-semibold">Ciliary / Sphincter (Miosis)</span>
+                        </div>
+                    </div>
+
+                    <!-- Mesopic -->
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-5 hover:border-emerald-500/50 transition group">
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="px-2.5 py-1 bg-blue-500/20 text-blue-400 text-xs font-bold rounded-lg border border-blue-500/30">الإضاءة المتوسطة الداخلية</span>
+                            <span class="text-lg font-black text-blue-400">4.0 - 5.0 مم</span>
+                        </div>
+                        <h4 class="text-white font-bold mb-1 text-sm">Mesopic (الإضاءة المتوسطة)</h4>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            النطاق المتوازن المعتاد للرؤية في ظروف الإضاءة الداخلية والمكاتب، يوازن بين كمية الضوء الواصل وعمق التركيز.
+                        </p>
+                        <div class="mt-4 pt-3 border-t border-slate-800 text-xs text-slate-400 flex justify-between">
+                            <span>الحالة الوظيفية:</span>
+                            <span class="text-blue-400 font-semibold">استجابة متوازنة</span>
+                        </div>
+                    </div>
+
+                    <!-- Scotopic -->
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-5 hover:border-emerald-500/50 transition group">
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="px-2.5 py-1 bg-purple-500/20 text-purple-400 text-xs font-bold rounded-lg border border-purple-500/30">الظلام التام / الليل</span>
+                            <span class="text-lg font-black text-purple-400">6.0 - 8.0 مم</span>
+                        </div>
+                        <h4 class="text-white font-bold mb-1 text-sm">Scotopic (الظلام الكامل)</h4>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            اتساع أقصى لدخول الضوء في الظلام لتأمين الرؤية الليلية، وقد يسبب الهالات والوهج الليلي إذا لم توضع بالحسبان في الليزر.
+                        </p>
+                        <div class="mt-4 pt-3 border-t border-slate-800 text-xs text-slate-400 flex justify-between">
+                            <span>المعيار الجراحي:</span>
+                            <span class="text-purple-400 font-semibold">أساس حساب منطقة العلاج</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Charts Row -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Chart 1: Pupil Sizes Comparison -->
+                <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-5 shadow-lg">
+                    <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-chart-bar text-emerald-400"></i> مقارنة قياسات الحدقة ومنطقة العلاج الليلي
+                    </h3>
+                    <div class="h-64 relative">
+                        <canvas id="pupilBarChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Chart 2: Manual vs Automated Accuracy -->
+                <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-5 shadow-lg">
+                    <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-chart-line text-emerald-400"></i> أداء الفحص اليدوي مقابل القياس الآلي بالأشعة تحت الحمراء
+                    </h3>
+                    <div class="h-64 relative">
+                        <canvas id="accuracyChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= TAB 2: CLINICAL SIMULATOR (DYNAMICS) ================= -->
+        <div id="tab-simulator" class="space-y-6 tab-content hidden">
+            <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-6">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-800 pb-4 gap-4">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2.5 py-0.5 bg-emerald-500/20 text-emerald-400 text-xs font-bold rounded-full border border-emerald-500/30">محاكي ديناميكية الحدقة</span>
+                            <span class="text-xs text-slate-400">Dynamic Eye Simulator</span>
+                        </div>
+                        <h2 class="text-xl font-black text-white flex items-center gap-2 mt-1">
+                            <i class="fa-solid fa-eye-dropper text-emerald-400"></i> محاكي استجابة الضوء والتفسير الإكلينيكي للأمراض
+                        </h2>
+                        <p class="text-xs text-slate-400">اختبر استجابة الحدقة ثنائية الجانب واختبار الضوء المتأرجح (Swinging Flashlight) وشخص الحالات السريرية تفاعلياً</p>
+                    </div>
+                </div>
+
+                <!-- Control Panel & Mode Select -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-5 space-y-4">
+                        <h3 class="text-sm font-bold text-emerald-400 flex items-center gap-2">
+                            <i class="fa-solid fa-sliders"></i> لوحة التحكم بالحالة السريرية
+                        </h3>
+                        
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">اختر الحالة السريرية المرضية:</label>
+                            <select id="simConditionSelect" onchange="updateSimulatorCondition()" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500">
+                                <option value="normal">1. منعكس الضوء الطبيعي (Normal Light Reflex)</option>
+                                <option value="rapd_right">2. عيب بؤبؤ وارد نسبي - عين يمنى (Right RAPD / Marcus Gunn)</option>
+                                <option value="argyll">3. حدقة أرغيل روبرتسون (Argyll Robertson Pupil)</option>
+                                <option value="horner_right">4. متلازمة هورنر - عين يمنى (Right Horner's Syndrome)</option>
+                                <option value="cn3_right">5. شلل العصب الثالث - عين يمنى (Right CN III Palsy)</option>
+                                <option value="glaucoma_right">6. جلوكوما حادة - عين يمنى (Acute Glaucoma)</option>
+                                <option value="adie_right">7. حدقة آدي البطينة - عين يمنى (Adie's Tonic Pupil)</option>
+                                <option value="atropine">8. اتساع دوائي قطرات اتروبين (Atropine Mydriasis)</option>
+                                <option value="miotic">9. انقباض دوائي شديد (Drug Miosis)</option>
+                                <option value="trauma_right">10. صدمة وتغير شكل الحدقة - عين يمنى (Ocular Trauma)</option>
+                            </select>
+                        </div>
+
+                        <!-- Flashlight Controls -->
+                        <div class="space-y-2 pt-2 border-t border-slate-800">
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">تسليط المصباح الضوئي (Flashlight):</label>
+                            <div class="grid grid-cols-3 gap-2">
+                                <button onclick="setFlashlight('none')" id="btn-flash-none" class="flash-btn py-2 px-2 rounded-lg text-xs font-bold bg-emerald-600 text-white shadow">
+                                    ظلام / إضاءة خافتة
+                                </button>
+                                <button onclick="setFlashlight('right')" id="btn-flash-right" class="flash-btn py-2 px-2 rounded-lg text-xs font-semibold text-slate-300 bg-slate-900 hover:bg-slate-800 border border-slate-700">
+                                    ضوء على اليمنى 👁️
+                                </button>
+                                <button onclick="setFlashlight('left')" id="btn-flash-left" class="flash-btn py-2 px-2 rounded-lg text-xs font-semibold text-slate-300 bg-slate-900 hover:bg-slate-800 border border-slate-700">
+                                    ضوء على اليسرى 👁️
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Accommodation toggle -->
+                        <div class="pt-2 border-t border-slate-800">
+                            <button onclick="toggleAccommodationSim()" id="btn-toggle-accom" class="w-full py-2 bg-slate-900 border border-slate-700 hover:bg-slate-800 text-slate-300 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-compress"></i> تفعيل استجابة التركيز للقريب (Near Triad)
+                            </button>
+                        </div>
+
+                        <!-- Diagnosis Details Box -->
+                        <div id="simDiagnosisBox" class="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-2 text-xs">
+                            <div class="font-bold text-emerald-400" id="simDiagTitle">منعكس الضوء الطبيعي</div>
+                            <p class="text-slate-300 text-xs leading-relaxed" id="simDiagDesc">ينقل العصب البصري (CN II) الإشارة الواردة وينشط العصب المحرك للعين (CN III) الانقباض اللاودي، مما يسبب انقباضاً متماثلاً مباشراً وتوافقياً للحدقتين.</p>
+                            <div class="pt-2 border-t border-slate-800 text-[11px] text-slate-400 flex justify-between">
+                                <span>المسار العصبي:</span>
+                                <span class="text-white font-semibold" id="simDiagPathway">CN II (Afferent) ➔ CN III (Efferent)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Visual Eyes Canvas Display -->
+                    <div class="lg:col-span-2 bg-slate-950 rounded-xl border border-slate-800 p-6 flex flex-col items-center justify-center space-y-6 relative overflow-hidden">
+                        
+                        <!-- Visual Ambient Light Indicator -->
+                        <div class="w-full flex justify-between items-center text-xs text-slate-400 border-b border-slate-800/80 pb-3">
+                            <span class="flex items-center gap-1.5 font-semibold text-white">
+                                <i class="fa-solid fa-eye text-emerald-400"></i> العرض السريري التفاعلي للعينين
+                            </span>
+                            <span id="lightStatusBadge" class="px-2.5 py-0.5 bg-slate-800 text-slate-300 rounded-full border border-slate-700">
+                                الحالة: إضاءة الغرفة العادية
+                            </span>
+                        </div>
+
+                        <!-- Interactive Eye Graphics Pair -->
+                        <div class="grid grid-cols-2 gap-8 sm:gap-16 w-full max-w-xl py-4">
+                            <!-- Right Eye -->
+                            <div class="flex flex-col items-center space-y-3">
+                                <span class="text-xs font-bold text-slate-300 flex items-center gap-1">
+                                    العين اليمنى (OD)
+                                    <span id="badge-right-eye" class="text-[10px] px-1.5 py-0.2 bg-slate-800 text-slate-400 rounded">طبيعي</span>
+                                </span>
+                                
+                                <!-- SVG Right Eye -->
+                                <div class="relative w-36 h-36 sm:w-44 sm:h-44 flex items-center justify-center bg-slate-900 rounded-full border-2 border-slate-800 p-2 shadow-2xl transition-all" id="eye-container-right">
+                                    <div id="flash-beam-right" class="absolute inset-0 bg-amber-400/20 rounded-full blur-md opacity-0 transition-opacity pointer-events-none"></div>
+                                    
+                                    <div id="sclera-right" class="w-full h-24 sm:h-28 bg-gradient-to-b from-slate-100 to-slate-300 rounded-full flex items-center justify-center relative overflow-hidden border border-slate-400 shadow-inner">
+                                        <div id="redness-right" class="absolute inset-0 bg-red-600/30 opacity-0 transition-opacity pointer-events-none"></div>
+                                        
+                                        <div id="iris-right" class="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-tr from-cyan-700 via-teal-600 to-emerald-800 rounded-full flex items-center justify-center border-2 border-teal-900 shadow-md transition-all duration-300">
+                                            <div id="pupil-right" class="w-10 h-10 bg-slate-950 rounded-full transition-all duration-300 border border-black/40 shadow-inner flex items-center justify-center">
+                                                <div class="w-2 h-2 bg-white/40 rounded-full -mt-2 -mr-2"></div>
+                                            </div>
+                                        </div>
+
+                                        <div id="eyelid-right" class="absolute top-0 left-0 right-0 h-0 bg-slate-800/90 border-b border-slate-700 transition-all duration-300 rounded-t-full pointer-events-none"></div>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-mono text-emerald-400" id="size-label-right">القطر: 4.5 مم</span>
+                            </div>
+
+                            <!-- Left Eye -->
+                            <div class="flex flex-col items-center space-y-3">
+                                <span class="text-xs font-bold text-slate-300 flex items-center gap-1">
+                                    العين اليسرى (OS)
+                                    <span id="badge-left-eye" class="text-[10px] px-1.5 py-0.2 bg-slate-800 text-slate-400 rounded">طبيعي</span>
+                                </span>
+                                
+                                <!-- SVG Left Eye -->
+                                <div class="relative w-36 h-36 sm:w-44 sm:h-44 flex items-center justify-center bg-slate-900 rounded-full border-2 border-slate-800 p-2 shadow-2xl transition-all" id="eye-container-left">
+                                    <div id="flash-beam-left" class="absolute inset-0 bg-amber-400/20 rounded-full blur-md opacity-0 transition-opacity pointer-events-none"></div>
+                                    
+                                    <div id="sclera-left" class="w-full h-24 sm:h-28 bg-gradient-to-b from-slate-100 to-slate-300 rounded-full flex items-center justify-center relative overflow-hidden border border-slate-400 shadow-inner">
+                                        <div id="redness-left" class="absolute inset-0 bg-red-600/30 opacity-0 transition-opacity pointer-events-none"></div>
+
+                                        <div id="iris-left" class="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-tr from-cyan-700 via-teal-600 to-emerald-800 rounded-full flex items-center justify-center border-2 border-teal-900 shadow-md transition-all duration-300">
+                                            <div id="pupil-left" class="w-10 h-10 bg-slate-950 rounded-full transition-all duration-300 border border-black/40 shadow-inner flex items-center justify-center">
+                                                <div class="w-2 h-2 bg-white/40 rounded-full -mt-2 -mr-2"></div>
+                                            </div>
+                                        </div>
+
+                                        <div id="eyelid-left" class="absolute top-0 left-0 right-0 h-0 bg-slate-800/90 border-b border-slate-700 transition-all duration-300 rounded-t-full pointer-events-none"></div>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-mono text-emerald-400" id="size-label-left">القطر: 4.5 مم</span>
+                            </div>
+                        </div>
+
+                        <!-- Live Action Feedback Box -->
+                        <div class="w-full bg-slate-900/90 border border-slate-800 rounded-lg p-3 text-center text-xs text-slate-300 font-semibold" id="simLiveActionText">
+                            💡 اختر الحالة المرضية ثم اضغط على "ضوء على اليمنى" أو "ضوء على اليسرى" لملاحظة حركة واستجابة الحدقة فوراً.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= TAB 3: CLINICAL CALCULATORS ================= -->
+        <div id="tab-calculators" class="space-y-6 tab-content hidden">
+            <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-xl">
+                <div class="border-b border-slate-800 pb-4 mb-6 flex justify-between items-center">
+                    <div>
+                        <h2 class="text-xl font-black text-white flex items-center gap-2">
+                            <i class="fa-solid fa-calculator text-emerald-400"></i> الحاسبات السريرية المتقدمة للحدقة (Clinical Calculators)
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-1">حسابات ديناميكية منعكس الضوء (qPLR) وتخطيط منطقة الإزالة القرنية لجراحات الليزك و SMILE</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Calculator 1: qPLR & Amplitude -->
+                    <div class="bg-slate-950/60 border border-slate-800/80 rounded-xl p-5 space-y-4">
+                        <h3 class="text-sm font-bold text-emerald-400 flex items-center gap-2">
+                            <i class="fa-solid fa-bolt"></i> 1. حاسبة سعة الانقباض الفعلي والنسبة المئوية (qPLR Calculator)
+                        </h3>
+                        <p class="text-xs text-slate-400">أدخل أقطار الحدقة قبل وبعد التعرض للوميض الضوئي لحساب سعة الانقباض المئوية والتصنيف السريري.</p>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1">القطر الأقصى في الظلام (D_max مم):</label>
+                                <input type="number" id="dMaxInput" value="6.0" step="0.1" min="1" max="9" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1">القطر الأدنى بعد الوميض (D_min مم):</label>
+                                <input type="number" id="dMinInput" value="3.8" step="0.1" min="0.5" max="8" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500">
+                            </div>
+                        </div>
+
+                        <button onclick="calculateQPLR()" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition shadow">
+                            حساب qPLR والتقييم السريري
+                        </button>
+
+                        <!-- qPLR Results Box -->
+                        <div id="qplrResultBox" class="bg-slate-900 border border-slate-800 rounded-lg p-4 space-y-2 text-xs">
+                            <div class="flex justify-between">
+                                <span class="text-slate-400">سعة الانقباض الفعلي (AMP):</span>
+                                <span id="resAmp" class="font-bold text-white">-- مم</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-400">نسبة الانقباض المئوية (qPLR %):</span>
+                                <span id="resPercent" class="font-bold text-emerald-400">-- %</span>
+                            </div>
+                            <div class="flex justify-between items-center pt-2 border-t border-slate-800">
+                                <span class="text-slate-400">التصنيف السريري:</span>
+                                <span id="resClassification" class="px-2.5 py-1 rounded-full font-bold text-xs bg-slate-800 text-slate-300">في انتظار الحساب</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Calculator 2: Min Optical Zone for Refractive Surgery -->
+                    <div class="bg-slate-950/60 border border-slate-800/80 rounded-xl p-5 space-y-4">
+                        <h3 class="text-sm font-bold text-emerald-400 flex items-center gap-2">
+                            <i class="fa-solid fa-eye-dropper"></i> 2. حاسبة الحد الأدنى لمنطقة الإزالة القرنية (Min Optical Zone)
+                        </h3>
+                        <p class="text-xs text-slate-400">تضمن تغطية مساحة البؤبؤ في الظلام لتفادي الهالات والوهج الليلي في عمليات LASIK / SMILE.</p>
+                        
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">قطر الحدقة في الظلام (Scotopic Pupil mm):</label>
+                            <input type="number" id="scotopicInput" value="6.5" step="0.1" min="4" max="9" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">زاوية كابا (Angle Kappa mm):</label>
+                            <input type="number" id="angleKappaInput" value="0.3" step="0.05" min="0" max="1" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500">
+                        </div>
+
+                        <button onclick="calculateOpticalZone()" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition shadow">
+                            حساب منطقة العلاج وتوصيات زاوية كابا
+                        </button>
+
+                        <!-- Optical Zone Results Box -->
+                        <div id="ozResultBox" class="bg-slate-900 border border-slate-800 rounded-lg p-4 space-y-2 text-xs">
+                            <div class="flex justify-between">
+                                <span class="text-slate-400">منطقة الإزالة المقترحة (Min Optical Zone):</span>
+                                <span id="resOz" class="font-bold text-white">-- مم</span>
+                            </div>
+                            <div class="flex justify-between items-center pt-2 border-t border-slate-800">
+                                <span class="text-slate-400">معيار خطورة زاوية كابا:</span>
+                                <span id="resKappa" class="px-2.5 py-1 rounded-full font-bold text-xs bg-slate-800 text-slate-300">في انتظار الحساب</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= TAB 4: NEUROLOGICAL & PATHWAYS ================= -->
+        <div id="tab-pathways" class="space-y-6 tab-content hidden">
+            <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-6">
+                <div>
+                    <h2 class="text-xl font-black text-white flex items-center gap-2">
+                        <i class="fa-solid fa-brain text-emerald-400"></i> مصفوفة التشخيص السريري والشرائح المرضية (Diagnostic Matrix)
+                    </h2>
+                    <p class="text-xs text-slate-400 mt-1">دليل أخصائي البصريات الشامل لتشخيص الحالات العصبية واختبارات منعكس الضوء والمسار العصبي (CN II & CN III)</p>
+                </div>
+
+                <!-- Search Input for Matrix -->
+                <div class="relative">
+                    <span class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-slate-500">
+                        <i class="fa-solid fa-search"></i>
+                    </span>
+                    <input type="text" id="matrixSearch" onkeyup="filterMatrix()" placeholder="ابحث في الحالات المرضية (مثل: RAPD, Argyll Robertson, Anisocoria...)" class="w-full bg-slate-950 border border-slate-800 rounded-xl pr-10 pl-4 py-3 text-sm text-white focus:outline-none focus:border-emerald-500">
+                </div>
+
+                <!-- Diagnostic Matrix Table / Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="matrixContainer">
+                    <!-- Item 1 -->
+                    <div class="matrix-card bg-slate-950/60 border border-slate-800 rounded-xl p-5 space-y-3">
+                        <div class="flex justify-between items-start">
+                            <span class="px-2.5 py-1 bg-red-500/20 text-red-400 text-xs font-bold rounded-lg border border-red-500/30">العيب البؤبؤي النسبي (RAPD)</span>
+                            <span class="text-xs text-slate-400 font-mono">Swinging Flashlight</span>
+                        </div>
+                        <h3 class="text-sm font-bold text-white">حدقة ماركوس غان (Marcus Gunn Pupil)</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed"><strong class="text-emerald-400">النتيجة:</strong> اتساع عكسي ظاهري للبؤبؤ (Paradoxical Dilation) عند الانتقال بالضوء للعين المصابة.</p>
+                        <p class="text-xs text-slate-300 leading-relaxed"><strong class="text-emerald-400">التشخيص:</strong> خلل العصب البصري الوارد (CN II) أو انسداد الوريد/الشريان الشبكي.</p>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="matrix-card bg-slate-950/60 border border-slate-800 rounded-xl p-5 space-y-3">
+                        <div class="flex justify-between items-start">
+                            <span class="px-2.5 py-1 bg-amber-500/20 text-amber-400 text-xs font-bold rounded-lg border border-amber-500/30">انفصال استجابة الضوء والقريب</span>
+                            <span class="text-xs text-slate-400 font-mono">Light-Near Dissociation</span>
+                        </div>
+                        <h3 class="text-sm font-bold text-white">حدقة أرغيل روبرتسون (Argyll Robertson Pupil)</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed"><strong class="text-emerald-400">النتيجة:</strong> تستجيب للتكيف للقريب وتفقد الاستجابة الضوئية تماماً.</p>
+                        <p class="text-xs text-slate-300 leading-relaxed"><strong class="text-emerald-400">التشخيص:</strong> مرض الزهري العصبي أو آفات الدماغ المتوسط.</p>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="matrix-card bg-slate-950/60 border border-slate-800 rounded-xl p-5 space-y-3">
+                        <div class="flex justify-between items-start">
+                            <span class="px-2.5 py-1 bg-blue-500/20 text-blue-400 text-xs font-bold rounded-lg border border-blue-500/30">تباين الحدقتين (Anisocoria)</span>
+                            <span class="text-xs text-slate-400 font-mono">Size Asymmetry</span>
+                        </div>
+                        <h3 class="text-sm font-bold text-white">تفاوت الحدقتين ومستويات الإضاءة</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed"><strong class="text-emerald-400">النتيجة:</strong> اختلاف غير متساوي في حجم حدقتي العينين بين الضوء والظلام.</p>
+                        <p class="text-xs text-slate-300 leading-relaxed"><strong class="text-emerald-400">التشخيص:</strong> تباين فيزيولوجي طبيعي أو شلل العصب الثالث أو متلازمة هورنر.</p>
+                    </div>
+
+                    <!-- Item 4 -->
+                    <div class="matrix-card bg-slate-950/60 border border-slate-800 rounded-xl p-5 space-y-3">
+                        <div class="flex justify-between items-start">
+                            <span class="px-2.5 py-1 bg-purple-500/20 text-purple-400 text-xs font-bold rounded-lg border border-purple-500/30">انقباض المسار الودي</span>
+                            <span class="text-xs text-slate-400 font-mono">Horner's Syndrome</span>
+                        </div>
+                        <h3 class="text-sm font-bold text-white">متلازمة هورنر (Horner's Syndrome)</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed"><strong class="text-emerald-400">النتيجة:</strong> انقباض الحدقة نتيجة انقطاع المسار العصبي الودي مع تدلي الجفن.</p>
+                        <p class="text-xs text-slate-300 leading-relaxed"><strong class="text-emerald-400">التشخيص:</strong> تلف المسار الودي الصادر للعين.</p>
+                    </div>
+
+                    <!-- Item 5 -->
+                    <div class="matrix-card bg-slate-950/60 border border-slate-800 rounded-xl p-5 space-y-3">
+                        <div class="flex justify-between items-start">
+                            <span class="px-2.5 py-1 bg-rose-500/20 text-rose-400 text-xs font-bold rounded-lg border border-rose-500/30">الجلوكوما الحادة</span>
+                            <span class="text-xs text-slate-400 font-mono">Acute Glaucoma</span>
+                        </div>
+                        <h3 class="text-sm font-bold text-white">حدقة متسعة وثابتة مع احمرار</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed"><strong class="text-emerald-400">النتيجة:</strong> حدقة متسعة وثابتة نتيجة ارتفاع ضغط العين الشديد مع احمرار العين.</p>
+                        <p class="text-xs text-slate-300 leading-relaxed"><strong class="text-emerald-400">التشخيص:</strong> نوبة جلوكوما مغلقة الزاوية حادة (Acute Angle-Closure Glaucoma).</p>
+                    </div>
+
+                    <!-- Item 6 -->
+                    <div class="matrix-card bg-slate-950/60 border border-slate-800 rounded-xl p-5 space-y-3">
+                        <div class="flex justify-between items-start">
+                            <span class="px-2.5 py-1 bg-amber-500/20 text-amber-400 text-xs font-bold rounded-lg border border-amber-500/30">التغيرات الدوائية والصدمات</span>
+                            <span class="text-xs text-slate-400 font-mono">Drugs & Trauma</span>
+                        </div>
+                        <h3 class="text-sm font-bold text-white">الاتساع/الانقباض الدوائي وصدمات العين</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed"><strong class="text-emerald-400">النتيجة:</strong> انقباض شديد بقطرات أو أدوية، أو اتساع ناتج عن قطرات مثل Atropine، أو شكل غير منتظم بسبب الصدمات.</p>
+                        <p class="text-xs text-slate-300 leading-relaxed"><strong class="text-emerald-400">التشخيص:</strong> أسباب دوائية أو تمزق عضلة القزحية العاصرة.</p>
+                    </div>
+                </div>
+
+                <!-- Neurological Indices Info -->
+                <div class="bg-slate-950 border border-emerald-500/30 rounded-xl p-5 space-y-3">
+                    <h3 class="text-sm font-bold text-emerald-400 flex items-center gap-2">
+                        <i class="fa-solid fa-microchip"></i> المؤشرات العصبية والفيزيوميكانيكية المتقدمة (NPi & IPA)
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2 text-xs">
+                        <div class="bg-slate-900 p-4 rounded-lg border border-slate-800 space-y-1">
+                            <div class="font-bold text-white">مؤشر العصبية الرقمي (NPi / QPi)</div>
+                            <p class="text-slate-300">خوارزمية تدمج 140 بارامتر ديناميكي. المعدل الطبيعي أكبر من أو يساوي 3.0، والقيم أقل من 3.0 تدل على خطورة عصبية بارتفاع الضغط داخل الجمجمة.</p>
+                        </div>
+                        <div class="bg-slate-900 p-4 rounded-lg border border-slate-800 space-y-1">
+                            <div class="font-bold text-white">مؤشر النشاط البؤبؤي (IPA)</div>
+                            <p class="text-slate-300">قياس تذبذبات البؤبؤ السريعة المستقلة عن الإضاءة لتقييم الإجهاد الذهني والتركيز المعرفي للطيارين ومشغلي الآلات الحساسة.</p>
+                        </div>
+                        <div class="bg-slate-900 p-4 rounded-lg border border-slate-800 space-y-1">
+                            <div class="font-bold text-white">نموذج كلفن فويغت (Kelvin-Voigt Model)</div>
+                            <p class="text-slate-300">محاكاة ميكانيكية حيوية لعضلات القزحية لتتبع تراجع الاستجابة مع حرمان النوم بدقة تتجاوز 90%.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= TAB 5: COMPARISON & REPORTS ================= -->
+        <div id="tab-comparison" class="space-y-6 tab-content hidden">
+            <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-6">
+                <div>
+                    <h2 class="text-xl font-black text-white flex items-center gap-2">
+                        <i class="fa-solid fa-microchip text-emerald-400"></i> مقارنة الأجهزة الآلية الرقمية مقابل الفحص اليدوي التقليدي
+                    </h2>
+                    <p class="text-xs text-slate-400 mt-1">لماذا يعتمد أخصائي البصريات الحديث على مقياس الحدقة الرقمي (Automated Infrared Pupillometer)؟</p>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-right text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-slate-950 text-slate-300 border-b border-slate-800">
+                                <th class="p-3">وجه المقارنة</th>
+                                <th class="p-3">الفحص اليدوي التقليدي (Penlight / Haab Scale)</th>
+                                <th class="p-3 text-emerald-400">القياس الآلي الرقمي (Automated Infrared Pupillometer)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800 text-slate-300">
+                            <tr>
+                                <td class="p-3 font-bold text-white">دقة القطر (Diameter Accuracy)</td>
+                                <td class="p-3 text-red-400">تخضع للتقدير البصري الشخصي (خطأ حتى 0.5 مم)</td>
+                                <td class="p-3 text-emerald-400 font-bold">دقة فائقة تصل إلى ±0.1 مم عبر خوارزميات Starburst</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-bold text-white">دقة سرعة الاستجابة (Speed Precision)</td>
+                                <td class="p-3 text-red-400">شبه مستحيلة القياس اليدوي الدقيق لزمن الكمون</td>
+                                <td class="p-3 text-emerald-400 font-bold">قياس دقيق لسرعة الانقباض وزمن الكمون (Latency ~0.25s)</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-bold text-white">البارامترات العصبية المحللة</td>
+                                <td class="p-3 text-red-400">تقتصر على التقدير العام (سريع / بطيء)</td>
+                                <td class="p-3 text-emerald-400 font-bold">أكثر من 140 بارامتر ديناميكي وعصبي (NPi, IPA, qPLR)</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-bold text-white">معدل الخطأ (Error Rate)</td>
+                                <td class="p-3 text-red-400">مرتفع (يتأثر بإضاءة الغرفة وتحيز الفاحص)</td>
+                                <td class="p-3 text-emerald-400 font-bold">يكاد يكون معدوماً بفضل الأكواب المعتمة (Opaque Eyecups)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Summary Recommendations Card -->
+                <div class="bg-slate-950 border border-slate-800 rounded-xl p-5 space-y-3">
+                    <h3 class="text-sm font-bold text-emerald-400 flex items-center gap-2">
+                        <i class="fa-solid fa-circle-check"></i> خلاصة التوصيات السريرية لأخصائي البصريات (Optoacademy Summary)
+                    </h3>
+                    <ul class="list-disc list-inside space-y-2 text-xs text-slate-300">
+                        <li><strong class="text-white">إلغاء التحيز اليدوي:</strong> استخدام الأجهزة الرقمية (qPLR) يضمن قياسات موضوعية لا تتأثر بمهارة الفاحص الفردية.</li>
+                        <li><strong class="text-white">مراعاة زاوية كابا (Angle Kappa):</strong> عند تجاوز زاوية كابا 0.5 مم، يفضل تركيز الليزر على صورة بوركنجي الأولى (Purkinje 1st Reflex) بدلاً من مركز البؤبؤ البصري لمنع التشوهات الانكسارية.</li>
+                        <li><strong class="text-white">الربط العصبي المبكر:</strong> ربط القراءات بالمسار العصبي (CN II & CN III) يضمن الكشف المبكر عن الآفات العصبية واعتلالات الدماغ والجلطات قبل ظهور الأعراض السريرية الواسعة.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Notification / Custom Toast Modal -->
+    <div id="toastNotification" class="fixed bottom-5 left-5 z-50 transform translate-y-32 opacity-0 transition-all duration-300 max-w-sm w-full bg-slate-900 border border-emerald-500/50 rounded-xl p-4 shadow-2xl flex items-start gap-3">
+        <div id="toastIcon" class="w-8 h-8 rounded-full bg-emerald-600/20 text-emerald-400 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <i class="fa-solid fa-check"></i>
+        </div>
+        <div class="flex-grow">
+            <h4 id="toastTitle" class="text-xs font-bold text-white">تنبيه النظام</h4>
+            <p id="toastMessage" class="text-xs text-slate-300 mt-0.5">رسالة النظام التفاعلية.</p>
+        </div>
+        <button onclick="closeNotification()" class="text-slate-400 hover:text-white text-xs">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-800 py-6 mt-12 text-center text-xs text-slate-400 space-y-3">
+        <div class="flex justify-center items-center gap-4">
+            <a href="https://www.facebook.com/share/1FFgnuEC9p/" target="_blank" class="hover:text-emerald-400 transition">Facebook</a>
+            <span>•</span>
+            <a href="https://www.instagram.com/rashamakhlouf2026?stkn=a2doMnBpZjZlcHkz" target="_blank" class="hover:text-emerald-400 transition">Instagram</a>
+            <span>•</span>
+            <a href="https://tinyurl.com/RashaHassanLinkedIn" target="_blank" class="hover:text-emerald-400 transition">LinkedIn</a>
+            <span>•</span>
+            <a href="mailto:optoacadmy@gmail.com" class="hover:text-emerald-400 transition">optoacadmy@gmail.com</a>
+        </div>
+        <p>جميع الحقوق محفوظة © 2026 | مقدم من Optoacademy | أخصائية البصريات رشا حسن (Optometrist Rasha Hassan)</p>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        let pupilBarChartInst = null;
+        let accuracyChartInst = null;
+
+        // Tab Switching Engine (Fully Fixes Navigation Issue)
+        function switchTab(tabId) {
+            // Hide all tab sections
+            document.querySelectorAll('.tab-content').forEach(el => {
+                el.classList.add('hidden');
+            });
+
+            // Reset navigation button styles
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-emerald-600', 'text-white', 'shadow');
+                btn.classList.add('text-slate-300', 'hover:bg-slate-800', 'hover:text-white');
+            });
+
+            // Show current tab section
+            const targetTab = document.getElementById('tab-' + tabId);
+            if (targetTab) {
+                targetTab.classList.remove('hidden');
+            }
+
+            // Activate button style
+            const activeBtn = document.getElementById('btn-' + tabId);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-slate-300', 'hover:bg-slate-800', 'hover:text-white');
+                activeBtn.classList.add('bg-emerald-600', 'text-white', 'shadow');
+            }
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Render Charts if Dashboard Tab
+            if (tabId === 'dashboard') {
+                setTimeout(initCharts, 100);
+            }
+
+            // Render Simulator if Simulator Tab
+            if (tabId === 'simulator') {
+                updateSimulatorCondition();
+            }
+        }
+
+        // Custom Notification Toast
+        function openNotification(message, type = 'info') {
+            const toast = document.getElementById('toastNotification');
+            const title = document.getElementById('toastTitle');
+            const msg = document.getElementById('toastMessage');
+            
+            msg.innerText = message;
+            title.innerText = type === 'info' ? 'تنبيه Optoacademy' : 'نجاح العملية';
+
+            toast.classList.remove('translate-y-32', 'opacity-0');
+            setTimeout(() => {
+                closeNotification();
+            }, 5000);
+        }
+
+        function closeNotification() {
+            const toast = document.getElementById('toastNotification');
+            toast.classList.add('translate-y-32', 'opacity-0');
+        }
+
+        // Simulator Logic
+        let currentSimCondition = 'normal';
+        let currentFlashlight = 'none';
+        let isAccommodating = false;
+
+        const simData = {
+            normal: {
+                title: "1. منعكس الضوء الطبيعي (Normal Light Reflex)",
+                desc: "تسليط الضوء على إحدى العينين ينجم عنه انقباض متماثل ومباشر وتوافقي لكلا الحدقتين بنفس الدرجة، نظراً للتغذية العصبية ثنائية الجانب من نواة إيدنجر-ويستفال.",
+                pathway: "CN II (Afferent) ➔ Edinger-Westphal ➔ CN III (Efferent)",
+                badgeR: "طبيعي", badgeL: "طبيعي"
+            },
+            rapd_right: {
+                title: "2. عيب بؤبؤ وارد نسبي بالعين اليمنى (Right RAPD / Marcus Gunn Pupil)",
+                desc: "عند تسليط الضوء على العين اليمنى المصابة بتلف العصب البصري، يقل الدافع الوارد فيتسع البؤبؤ ظاهرياً (Paradoxical Dilation). بينما تسليط الضوء على العين اليسرى السليمة يسبب انقباضاً متماثلاً كلياً.",
+                pathway: "تلف العصب البصري الأيمن (Right CN II Defect)",
+                badgeR: "تلف CN II", badgeL: "سليم"
+            },
+            argyll: {
+                title: "3. حدقة أرغيل روبرتسون (Argyll Robertson Pupil)",
+                desc: "تتميز بغياب تام لمنعكس الضوء (لا تنقبض بالضوء المباشر أو التوافقي)، لكنها تنقبض بشكل طبيعي وسريع عند التركيز على هدف قريب (Light-Near Dissociation).",
+                pathway: "آفة الدماغ المتوسط (Neurosyphilis / Midbrain lesion)",
+                badgeR: "غياب الضوء", badgeL: "غياب الضوء"
+            },
+            horner_right: {
+                title: "4. متلازمة هورنر بالعين اليمنى (Right Horner's Syndrome)",
+                desc: "انقباض شديد في حدقة العين اليمنى (Miosis) مع تدلي جزئي للجفن (Ptosis) نتيجة انقطاع المسار العصبي الودي، ويزداد التفاوت في الظلام.",
+                pathway: "انقطاع المسار العصبي الودي (Sympathetic Pathway Defect)",
+                badgeR: "انقباض + تدلي", badgeL: "طبيعي"
+            },
+            cn3_right: {
+                title: "5. شلل العصب الثالث بالعين اليمنى (Right CN III Palsy)",
+                desc: "حدقة العين اليمنى متسعة وثابتة تماماً لا تستجيب للضوء المباشر ولا التوافقي بسبب فقدان التغذية اللاودية العاصرة.",
+                pathway: "شلل العصب المحرك للعين (Right CN III Efferent Block)",
+                badgeR: "حدقة متسعة وثابتة", badgeL: "سليمة"
+            },
+            glaucoma_right: {
+                title: "6. الجلوكوما الحادة بالعين اليمنى (Acute Angle-Closure Glaucoma)",
+                desc: "حدقة متسعة بيضاوية وثابتة مع احمرار شديد في ملتحمة العين نتيجة الارتفاع المفاجئ لضغط العين الداخلي.",
+                pathway: "ارتفاع ضغط العين ➔ شلل عضلة القزحية",
+                badgeR: "متسعة + احمرار", badgeL: "طبيعية"
+            },
+            adie_right: {
+                title: "7. حدقة آدي البطينة بالعين اليمنى (Right Adie's Tonic Pupil)",
+                desc: "استجابة بطيئة جداً ومحدودة للانعكاس الضوئي مع بطء شديد في الانبساط، ناتجة عن خلل في العقدة الهدبية.",
+                pathway: "تلف العقدة الهدبية (Ciliary Ganglion Denervation)",
+                badgeR: "استجابة بطيئة", badgeL: "طبيعية"
+            },
+            atropine: {
+                title: "8. الاتساع الدوائي بقطرات الأتروبين (Atropine Mydriasis)",
+                desc: "اتساع أقصى وثابت للبؤبؤين في كلا العينين (يصل إلى 8 مم) مع شلل التكيف وعدم الاستجابة إطلاقاً للضوء.",
+                pathway: "تثبيط المستقبلات الكولينيرجية (Muscarinic Block)",
+                badgeR: "موسع دوائياً", badgeL: "موسع دوائياً"
+            },
+            miotic: {
+                title: "9. الانقباض الدوائي الشديد (Drug Miosis / Opioids)",
+                desc: "انقباض شديد جداً ودبوسي للبؤبؤين (Pinpoint Pupils ~1.0-1.5mm) نتيجة قطرات بيlocarpine أو سمية الأفيونات.",
+                pathway: "تحفيز لاودي شديد (Parasympathomimetic)",
+                badgeR: "انقباض شديد", badgeL: "انقباض شديد"
+            },
+            trauma_right: {
+                title: "10. صدمات العين وتغير شكل الحدقة (Ocular Trauma)",
+                desc: "تغير شكل حدقة العين اليمنى لتصبح غير منتظمة أو مشوهة (Irregular Pupil) نتيجة تمزق العضلة العاصرة أو انحشار القزحية.",
+                pathway: "تلف ميكانيكي لعضلات القزحية (Sphincter Tear)",
+                badgeR: "شكل غير منتظم", badgeL: "طبيعية"
+            }
+        };
+
+        function updateSimulatorCondition() {
+            const selectEl = document.getElementById('simConditionSelect');
+            if (!selectEl) return;
+            currentSimCondition = selectEl.value;
+            const data = simData[currentSimCondition];
+            
+            document.getElementById('simDiagTitle').innerText = data.title;
+            document.getElementById('simDiagDesc').innerText = data.desc;
+            document.getElementById('simDiagPathway').innerText = data.pathway;
+            document.getElementById('badge-right-eye').innerText = data.badgeR;
+            document.getElementById('badge-left-eye').innerText = data.badgeL;
+
+            isAccommodating = false;
+            renderEyes();
+        }
+
+        function setFlashlight(pos) {
+            currentFlashlight = pos;
+            
+            document.querySelectorAll('.flash-btn').forEach(btn => {
+                btn.classList.remove('bg-emerald-600', 'text-white', 'shadow');
+                btn.classList.add('bg-slate-900', 'text-slate-300');
+            });
+
+            const activeBtn = document.getElementById('btn-flash-' + pos);
+            if (activeBtn) {
+                activeBtn.classList.remove('bg-slate-900', 'text-slate-300');
+                activeBtn.classList.add('bg-emerald-600', 'text-white', 'shadow');
+            }
+
+            renderEyes();
+        }
+
+        function toggleAccommodationSim() {
+            isAccommodating = !isAccommodating;
+            const btn = document.getElementById('btn-toggle-accom');
+            if (isAccommodating) {
+                btn.classList.remove('bg-slate-900', 'text-slate-300');
+                btn.classList.add('bg-blue-600', 'text-white');
+                openNotification('تم تفعيل التركيز للقريب (Near Triad)', 'info');
+            } else {
+                btn.classList.remove('bg-blue-600', 'text-white');
+                btn.classList.add('bg-slate-900', 'text-slate-300');
+            }
+            renderEyes();
+        }
+
+        function renderEyes() {
+            let sizeR = 4.5, sizeL = 4.5;
+            let rednessR = 0, rednessL = 0;
+            let ptosisR = 0, ptosisL = 0;
+            let borderR = "50%", borderL = "50%";
+
+            const flashR = document.getElementById('flash-beam-right');
+            const flashL = document.getElementById('flash-beam-left');
+            if (!flashR || !flashL) return;
+
+            flashR.style.opacity = currentFlashlight === 'right' ? '1' : '0';
+            flashL.style.opacity = currentFlashlight === 'left' ? '1' : '0';
+
+            const statusText = document.getElementById('simLiveActionText');
+
+            switch (currentSimCondition) {
+                case 'normal':
+                    if (currentFlashlight === 'right' || currentFlashlight === 'left') {
+                        sizeR = 2.2; sizeL = 2.2;
+                        statusText.innerText = "⚡ منعكس طبيعي: تسليط الضوء أدى لانقباض متماثل ومباشر وتوافقي للحدقتين (2.2 مم).";
+                    } else {
+                        statusText.innerText = "💡 حالة الإضاءة العادية: الحدقتان متماثلتان بنطاق (4.5 مم).";
+                    }
+                    break;
+
+                case 'rapd_right':
+                    if (currentFlashlight === 'right') {
+                        sizeR = 5.5; sizeL = 5.5;
+                        statusText.innerText = "⚠️ حدقة ماركوس غان (RAPD): تسليط الضوء على العين اليمنى المصابة ينجم عنه اتساع عكسي للبؤبؤين (5.5 مم).";
+                    } else if (currentFlashlight === 'left') {
+                        sizeR = 2.2; sizeL = 2.2;
+                        statusText.innerText = "✅ تسليط الضوء على العين اليسرى السليمة يسبب انقباضاً كلياً متماثلاً (2.2 مم).";
+                    } else {
+                        statusText.innerText = "💡 في الظلام/الإضاءة العادية: حجم الحدقتين متماثل (4.5 مم).";
+                    }
+                    break;
+
+                case 'argyll':
+                    if (isAccommodating) {
+                        sizeR = 2.0; sizeL = 2.0;
+                        statusText.innerText = "🎯 حدقة أرغيل روبرتسون: انقباض طبيعي وسريع عند التكيف للقريب (Light-Near Dissociation).";
+                    } else if (currentFlashlight !== 'none') {
+                        sizeR = 4.5; sizeL = 4.5;
+                        statusText.innerText = "❌ غياب استجابة الضوء: الحدقتان لا تنقبضان إطلاقاً عند تسليط الضوء المباشر أو التوافقي.";
+                    }
+                    break;
+
+                case 'horner_right':
+                    sizeR = 2.0; sizeL = 4.5;
+                    ptosisR = 35;
+                    if (currentFlashlight === 'left' || currentFlashlight === 'right') {
+                        sizeR = 1.8; sizeL = 2.2;
+                    }
+                    statusText.innerText = "👁️ متلازمة هورنر: انقباض بؤبؤ العين اليمنى (2.0 مم) مع تدلي الجفن جزئياً (Ptosis).";
+                    break;
+
+                case 'cn3_right':
+                    sizeR = 7.5;
+                    if (currentFlashlight === 'left') sizeL = 2.2;
+                    statusText.innerText = "⚠️ شلل العصب الثالث الأيمن: حدقة العين اليمنى متسعة وثابتة (7.5 مم) ولا تستجيب للضوء.";
+                    break;
+
+                case 'glaucoma_right':
+                    sizeR = 6.5; rednessR = 1; borderR = "40% 60% 50% 50%";
+                    if (currentFlashlight === 'left') sizeL = 2.2;
+                    statusText.innerText = "🔴 جلوكوما حادة: حدقة متسعة غير منتظمة مع احمرار شديد في العين اليمنى لارتفاع الضغط.";
+                    break;
+
+                case 'adie_right':
+                    sizeR = 6.0;
+                    if (currentFlashlight === 'right') sizeR = 5.2;
+                    if (currentFlashlight === 'left') sizeL = 2.2;
+                    statusText.innerText = "⏱️ حدقة آدي البطينة: استجابة بطيئة جداً ومحدودة في العين اليمنى للضوء.";
+                    break;
+
+                case 'atropine':
+                    sizeR = 8.0; sizeL = 8.0;
+                    statusText.innerText = "💊 اتساع دوائي أقصى (8.0 مم): لا تتأثر الحدقتان بضوء المصباح نتيجة تأثير الأتروبين.";
+                    break;
+
+                case 'miotic':
+                    sizeR = 1.2; sizeL = 1.2;
+                    statusText.innerText = "💊 انقباض دوائي شديد (Pinpoint Pupils ~1.2mm): تثبيت الانقباض بقطرات كولينيرجية أو أفيونات.";
+                    break;
+
+                case 'trauma_right':
+                    sizeR = 5.5; borderR = "30% 70% 40% 60%"; rednessR = 0.6;
+                    if (currentFlashlight === 'left') sizeL = 2.2;
+                    statusText.innerText = "⚠️ صدمة العين (Trauma): تغير شكل الحدقة لتصبح غير منتظمة بسبب تمزق العضلة العاصرة.";
+                    break;
+            }
+
+            if (isAccommodating && currentSimCondition !== 'argyll') {
+                sizeR = Math.max(1.5, sizeR - 1.5);
+                sizeL = Math.max(1.5, sizeL - 1.5);
+            }
+
+            const pupilR = document.getElementById('pupil-right');
+            const pupilL = document.getElementById('pupil-left');
+
+            const pxR = Math.min(80, Math.max(12, sizeR * 9));
+            const pxL = Math.min(80, Math.max(12, sizeL * 9));
+
+            pupilR.style.width = pxR + 'px';
+            pupilR.style.height = pxR + 'px';
+            pupilR.style.borderRadius = borderR;
+
+            pupilL.style.width = pxL + 'px';
+            pupilL.style.height = pxL + 'px';
+            pupilL.style.borderRadius = borderL;
+
+            document.getElementById('size-label-right').innerText = `القطر: ${sizeR.toFixed(1)} مم`;
+            document.getElementById('size-label-left').innerText = `القطر: ${sizeL.toFixed(1)} مم`;
+
+            document.getElementById('redness-right').style.opacity = rednessR;
+            document.getElementById('redness-left').style.opacity = rednessL;
+
+            document.getElementById('eyelid-right').style.height = ptosisR + '%';
+            document.getElementById('eyelid-left').style.height = ptosisL + '%';
+        }
+
+        // Calculators
+        function calculateQPLR() {
+            const dMax = parseFloat(document.getElementById('dMaxInput').value);
+            const dMin = parseFloat(document.getElementById('dMinInput').value);
+
+            if (isNaN(dMax) || isNaN(dMin) || dMax <= 0 || dMin <= 0 || dMin >= dMax) {
+                openNotification('يرجى إدخال قيم صحيحة (D_max أكبر من D_min).', 'info');
+                return;
+            }
+
+            const amp = dMax - dMin;
+            const qplrPercent = (amp / dMax) * 100;
+
+            document.getElementById('resAmp').innerText = amp.toFixed(2) + ' مم';
+            document.getElementById('resPercent').innerText = qplrPercent.toFixed(1) + ' %';
+
+            const classBadge = document.getElementById('resClassification');
+            if (qplrPercent >= 25) {
+                classBadge.className = 'px-2.5 py-1 rounded-full font-bold text-xs bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
+                classBadge.innerText = 'استجابة سريعة طبيعية (Brisk >= 25%)';
+            } else if (qplrPercent >= 10) {
+                classBadge.className = 'px-2.5 py-1 rounded-full font-bold text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30';
+                classBadge.innerText = 'استجابة بطيئة (Sluggish 10-24%)';
+            } else {
+                classBadge.className = 'px-2.5 py-1 rounded-full font-bold text-xs bg-red-500/20 text-red-400 border border-red-500/30';
+                classBadge.innerText = 'استجابة ثابتة/معدومة (Fixed < 10%)';
+            }
+
+            openNotification('تم حساب مؤشر qPLR بنجاح.', 'success');
+        }
+
+        function calculateOpticalZone() {
+            const scotopic = parseFloat(document.getElementById('scotopicInput').value);
+            const kappa = parseFloat(document.getElementById('angleKappaInput').value);
+
+            if (isNaN(scotopic) || isNaN(kappa)) {
+                openNotification('يرجى إدخال قيم صحيحة.', 'info');
+                return;
+            }
+
+            const minOpticalZone = scotopic + 0.5;
+            document.getElementById('resOz').innerText = minOpticalZone.toFixed(2) + ' مم';
+
+            const kappaBadge = document.getElementById('resKappa');
+            if (kappa > 0.5) {
+                kappaBadge.className = 'px-2.5 py-1 rounded-full font-bold text-xs bg-red-500/20 text-red-400 border border-red-500/30';
+                kappaBadge.innerText = 'زاوية كابا عالية (>0.5مم) - يوصى بالتركيز على Purkinje 1st';
+            } else {
+                kappaBadge.className = 'px-2.5 py-1 rounded-full font-bold text-xs bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
+                kappaBadge.innerText = 'زاوية كابا طبيعية (آمنة لمركز البؤبؤ)';
+            }
+
+            openNotification('تم حساب الحد الأدنى لمنطقة العلاج بنجاح.', 'success');
+        }
+
+        function filterMatrix() {
+            const query = document.getElementById('matrixSearch').value.toLowerCase();
+            const cards = document.querySelectorAll('.matrix-card');
+
+            cards.forEach(card => {
+                const text = card.innerText.toLowerCase();
+                card.style.display = text.includes(query) ? 'block' : 'none';
+            });
+        }
+
+        // Initialize Analytics Charts safely
+        function initCharts() {
+            const ctxBarEl = document.getElementById('pupilBarChart');
+            const ctxAccEl = document.getElementById('accuracyChart');
+            if (!ctxBarEl || !ctxAccEl) return;
+
+            if (pupilBarChartInst) pupilBarChartInst.destroy();
+            if (accuracyChartInst) accuracyChartInst.destroy();
+
+            const ctxBar = ctxBarEl.getContext('2d');
+            pupilBarChartInst = new Chart(ctxBar, {
+                type: 'bar',
+                data: {
+                    labels: ['Photopic (مضيء)', 'Mesopic (متوسط)', 'Scotopic (مظلم)', 'Min Optical Zone'],
+                    datasets: [{
+                        label: 'القطر (مم)',
+                        data: [2.5, 4.5, 7.0, 7.5],
+                        backgroundColor: [
+                            'rgba(245, 158, 11, 0.7)',
+                            'rgba(59, 130, 246, 0.7)',
+                            'rgba(168, 85, 247, 0.7)',
+                            'rgba(16, 185, 129, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgb(245, 158, 11)',
+                            'rgb(59, 130, 246)',
+                            'rgb(168, 85, 247)',
+                            'rgb(16, 185, 129)'
+                        ],
+                        borderWidth: 1,
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, max: 10, ticks: { color: '#94a3b8' } },
+                        x: { ticks: { color: '#94a3b8', font: { family: 'Cairo' } } }
+                    }
+                }
+            });
+
+            const ctxAcc = ctxAccEl.getContext('2d');
+            accuracyChartInst = new Chart(ctxAcc, {
+                type: 'bar',
+                data: {
+                    labels: ['دقة القطر (مم)', 'معدل الخطأ (%)', 'عدد البارامترات العصبية'],
+                    datasets: [
+                        {
+                            label: 'الفحص اليدوي التقليدي',
+                            data: [0.5, 12, 3],
+                            backgroundColor: 'rgba(239, 68, 68, 0.7)',
+                            borderRadius: 4
+                        },
+                        {
+                            label: 'القياس الآلي الرقمي',
+                            data: [0.1, 0.5, 140],
+                            backgroundColor: 'rgba(16, 185, 129, 0.7)',
+                            borderRadius: 4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { labels: { color: '#94a3b8', font: { family: 'Cairo' } } } },
+                    scales: {
+                        y: { beginAtZero: true, ticks: { color: '#94a3b8' } },
+                        x: { ticks: { color: '#94a3b8', font: { family: 'Cairo' } } }
+                    }
+                }
+            });
+        }
+
+        window.onload = function() {
+            initCharts();
+            updateSimulatorCondition();
+        };
+    </script>
+</body>
+</html>
+```
